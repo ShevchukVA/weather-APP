@@ -20,7 +20,7 @@ export default {
   sunsetRef: document.getElementById('sunset'),
   preloaderRef: document.getElementById('preload-img'),
   mainRef: document.querySelector('.main-section'),
-  moreInfoBtnRef: document.querySelector('five-day-section__button'),
+  moreInfoBtnRef: document.querySelector('.five-day-section__button'),
   moreInfoRef: document.querySelector('.five-day-section__hourly-list'),
   todayRef: document.querySelector('.btn-wrap__todayBtn'),
   moreDaysRef: document.querySelector('.btn-wrap__5dayBtn'),
@@ -29,4 +29,5 @@ export default {
   commentsSectionRef: document.querySelector('.comments'),
   closeMoreInfoRef: document.querySelector('.hourly-weather-close'),
   listHourRef: document.querySelector('.list__hour'),
+  mainRef: document.getElementsByTagName('main'),
 };

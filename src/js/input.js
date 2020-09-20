@@ -1,47 +1,33 @@
-import refs from './refs.js';
-import './fetchWeatherData.js';
+import allForOneDay from './allForOneDay';
+import allForFiveDay from './allForFiveDay';
+import get5dayobj from './create5dayObj';
+import refs from './refs';
 import forecastData from './fetchWeatherData.js';
-import dateBlock from './createDateBlock.js';
-import oneDayTemplate from './oneDayTemplate';
-import backImg from './backgroundImage.js';
-import { error } from '@pnotify/core/dist/PNotify.js';
-import '@pnotify/core/dist/PNotify.css';
-import '@pnotify/core/dist/BrightTheme.css';
-import { fiveDaysForecast } from './forecastForFiveDays.js';
-import { preloader } from './preloader.js';
-import './bookmarks.js';
+import { preloaderOff, preloaderOn } from './preloader';
+import { getCarusel, getCaruselInput } from './slick.js';
+import { error } from '@pnotify/core';
 
-export function handleInput() {
-  refs.inputRef.addEventListener('submit', e => {
-    e.preventDefault();
-    preloader();
-    const searchValue = e.currentTarget.elements.search.value;
-    //Блок з датою, світанком та заходом сонця
-    oneDayTemplate(searchValue);
-    forecastData.getForecast(searchValue).then(city => {
-      if (city['cod'] === '404' || !searchValue) {
-        error({ title: 'NOTICE!', text: "Can't show such city!" });
-      } else {
-        dateBlock(city);
-      }
-    });
+refs.inputRef.addEventListener('submit', e => {
+  e.preventDefault();
+  preloaderOn();
+  const searchValue = e.currentTarget.elements.search.value;
 
-    // Блок з прогнозом погоди на 5 днів
-    fiveDaysForecast(searchValue);
-    
-    // Додавання рандомної картинки на бекграунд
+  forecastData.getForecast(searchValue).then(city => {
+    if (city['cod'] === '404' || !searchValue) {
+      error({ title: 'Oh No!', text: 'Wrong city!' })
+    }else{
+      allForOneDay(city);
+    }
 
-    console.log(
-      backImg.getImage(searchValue).then(image => {
-        if (image.length === 0) {
-          error({ title: 'Sorry!', text: 'The picture is not uploaded!' });
-        }
-        const randomImage =
-          image[Math.floor(Math.random() * image.length)].largeImageURL;
-        console.log(
-          (refs.weatherBlock.style.backgroundImage = `url(${randomImage})`),
-        );
-      }),
-    );
-  });
-}
+    preloaderOff();
+
+
+  
+refs.moreDaysRef.addEventListener('click', ()=>{
+  forecastData.getForecastFiveDays(searchValue).then(city => {
+      let objOf5day = get5dayobj(city);
+      allForFiveDay(objOf5day);
+      getCaruselInput();
+    })});
+});
+})

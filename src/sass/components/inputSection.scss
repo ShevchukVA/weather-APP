@@ -6,7 +6,7 @@
     margin-bottom: 104px;
   }
   @include desktop-media {
-    padding-top: 79px;
+    padding-top: 50px;
     margin-bottom: 94px;
   }
   &__form {
@@ -47,6 +47,7 @@
     transform: translateY(-50%);
     right: 22px;
     cursor: pointer;
+    outline: none;
   }
 }
 .bookmarks {
@@ -54,15 +55,17 @@
     margin: 0 auto;
     list-style: none;
     display: flex;
-
+    min-width: 0;
     @include tablet-media {
       width: 506px;
+      min-width: 0;
     }
   }
   &__item {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    min-width: 0px;
     border-radius: 12px;
     background-color: $input-color;
     opacity: 0.6;
@@ -71,7 +74,11 @@
     padding: 2px 12px;
     margin-right: 10px;
     text-decoration: underline;
+    cursor: pointer;
   }
+}
+.orange {
+  fill: orange;
 }
 
 .bookmarkcCloseBtn {
@@ -80,4 +87,5 @@
   border: none;
   background-color: transparent;
   background-image: url(.././icon/close.svg);
+  cursor: pointer;
 }

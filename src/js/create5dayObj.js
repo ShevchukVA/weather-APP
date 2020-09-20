@@ -2,8 +2,9 @@ let arrWithDayData;
 let dayArr;
 let index;
 let temporaryTemp;
+let weatherDay;
 
-const getObj = data => {
+const get5dayObj = data => {
   arrWithDayData = [];
   dayArr = 0;
   index = -1;
@@ -19,6 +20,7 @@ const getObj = data => {
       index += 1;
       const nameOfDay = time.toLocaleString('en', { weekday: 'long' });
       const nameOfMonth = time.toLocaleString('en', { month: 'short' });
+      weatherDay = thisDay['weather'][0]['icon'];
       arrWithDayData.push({
         currentDay,
         nameOfDay,
@@ -27,6 +29,7 @@ const getObj = data => {
         min: temporaryTemp,
         max: temporaryTemp,
         index,
+        weatherDay,
       });
       setTimeArr(thisDay, time);
     } else {
@@ -39,6 +42,7 @@ const getObj = data => {
       setTimeArr(thisDay, time);
     }
   }
+  arrWithDayData.length = 5;
   return arrWithDayData;
 };
 
@@ -47,7 +51,11 @@ const setTimeArr = (day, time) => {
   if (hourTime === 0) {
     hourTime = 24;
   }
-  const localTime = hourTime + time.getTimezoneOffset() / 60;
+  if (hourTime === 12) {
+    arrWithDayData[index]['weatherDay'] = day['weather'][0]['icon'];
+  }
+  const localTimeHours =('0' + (hourTime + time.getTimezoneOffset() / 60)).slice('-2');
+  const localTime = localTimeHours +':' + '00';
   const weather = day['weather'][0]['icon'];
   const temperature = Math.round(day['main']['temp']);
   const pressure = day['main']['pressure'];
@@ -63,4 +71,4 @@ const setTimeArr = (day, time) => {
   });
 };
 
-export default getObj;
+export default get5dayObj;
